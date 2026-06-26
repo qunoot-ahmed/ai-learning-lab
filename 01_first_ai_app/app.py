@@ -6,20 +6,27 @@ load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 
+
+def ask_ai(prompt):
+    client = genai.Client(api_key=api_key)
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text
+
+
 if not api_key:
     print("Gemini API key not found.")
 else:
-    client = genai.Client(api_key=api_key)
-
     prompt = input("Ask AI something: ").strip()
 
     if not prompt:
         print("Prompt cannot be empty.")
     else:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
+        answer = ask_ai(prompt)
 
         print("\n===== AI Response =====")
-        print(response.text)
+        print(answer)
