@@ -1,7 +1,4 @@
-import os
-from dotenv import load_dotenv
-from google import genai
-load_dotenv()
+from common.gemini_client import ask_ai
 from pathlib import Path
 
 OUTPUT_FILE = Path("generated_test_cases.md")
@@ -11,18 +8,6 @@ def save_output(response):
         file.write(response)
 
     print(f"Test cases saved to {OUTPUT_FILE}")
-
-
-api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
-
-
-def ask_ai(prompt):
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
-    return response.text
 
 
 def build_prompt(requirement):
@@ -88,4 +73,5 @@ def main():
 
     save_output(response)
 
-main()
+if __name__ == "__main__":
+    main()
